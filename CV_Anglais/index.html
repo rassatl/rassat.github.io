@@ -17,13 +17,15 @@
     </style>
   </head>
   <body>
-    <!-- Affichage du PDF -->
+    <!-- Affiche le PDF -->
     <iframe src="/CV_Anglais.pdf"></iframe>
 
-    <!-- Téléchargement automatique -->
-    <a id="dl" href="/CV_Anglais.pdf" download="CV_Anglais.pdf" style="display:none;"></a>
+    <!-- Déclenche le téléchargement -->
+    <a id="dl" href="/CV_Anglais.pdf" download="CV_Anglais.pdf" style="display: none;"></a>
     <script>
-      setTimeout(() => {document.getElementById('dl').click();}, 500);
-      </script>
+      setTimeout(() => {
+        document.getElementById('dl').click();
+      }, 500);
+    </script>
   </body>
 </html>
