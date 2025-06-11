@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import CompanyItem from './CompanyItem.vue'
-import Modal from './Modal.vue'
+import Modal from './ModalCompany.vue'
 import CompanyInformations from './CompanyInformations.vue'
 
 const props = defineProps({
