@@ -1,10 +1,14 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, inject } from 'vue';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-control-geocoder';
+import UnavailablePopup from './UnavailablePopup.vue'
+const popupRef = ref()
+
+const t = inject('t')
 
 const emit = defineEmits(['refresh']);
 const speciality = ref('');
@@ -127,6 +131,8 @@ const submitForm = async () => {
     y.value = '';
 
     emit('refresh');
+    // Afficher le popup de succès
+    popupRef.value.showPopup("Fonctionalité refresh en développement ! Faite F5 pour voir les changements.");
     emit('close');
   } catch (e) {
     console.error("Erreur lors de l'ajout de l'entreprise : ", e);
@@ -134,45 +140,44 @@ const submitForm = async () => {
 };
 </script>
 
-
-
 <template>
   <div class="form-map-wrapper">
     <form class="form-container" @submit.prevent="submitForm">
-      <h2>Ajouter une entreprise</h2>
+      <h2>{{ t('addCompanyForm.addCompany') }}</h2>
       <div class="form-group">
-        <label for="speciality">Spécialité</label>
+        <label for="speciality">{{ t('addCompanyForm.schoolSpeciality') }}</label>
         <select id="speciality" v-model="speciality" required>
-          <option disabled value="">-- Sélectionner une spécialité --</option>
-          <option value="Développement Logiciel, Tests et Qualité">Développement Logiciel, Tests et Qualité</option>
-          <option value="IA & Big Data">IA & Big Data</option>
+          <option disabled value="">{{ t('addCompanyForm.selectSpeciality') }}</option>
+          <option value="Développement Logiciel, Tests et Qualité">{{ t('addCompanyForm.dltq') }}</option>
+          <option value="IA & Big Data">{{ t('addCompanyForm.iabd') }}</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="name">Nom</label>
+        <label for="name">{{ t('addCompanyForm.companyName') }}</label>
         <input id="name" v-model="name" required />
       </div>
       <div class="form-group">
-        <label for="country">Pays</label>
+        <label for="country">{{ t('addCompanyForm.companyState') }}</label>
         <input id="country" v-model="country" required />
       </div>
       <div class="form-group">
-        <label for="address">Adresse</label>
+        <label for="address">{{ t('addCompanyForm.companyAddress') }}</label>
         <input id="address" v-model="address" required />
       </div>
       <div class="form-group">
-        <label for="city">Ville</label>
+        <label for="city">{{ t('addCompanyForm.companyCity') }}</label>
         <input id="city" v-model="city" required />
       </div>
       <div class="form-group">
-        <label for="pc">Code Postal</label>
+        <label for="pc">{{ t('addCompanyForm.companyPC') }}</label>
         <input id="pc" v-model="pc" required />
       </div>
-      <button type="submit" class="submit-button">Ajouter l'entreprise</button>
+      <button type="submit" class="submit-button">{{ t('addCompanyForm.addCompanyButton') }}</button>
     </form>
 
     <div class="mini-map" ref="mapContainer"></div>
   </div>
+  <UnavailablePopup ref="popupRef" />
 </template>
 
 

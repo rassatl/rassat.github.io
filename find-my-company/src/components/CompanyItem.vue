@@ -1,4 +1,6 @@
 <script setup>
+import { inject } from 'vue'
+const t = inject('t')
 defineProps({
   speciality: String,
   name: String,
@@ -6,6 +8,7 @@ defineProps({
   country: String,
   pc: String,
 })
+const DLTQ = "Développement Logiciel, Tests et Qualité";
 </script>
 
 <template>
@@ -15,7 +18,7 @@ defineProps({
       <div class="left">
         <h3 class="speciality">
           <span v-if="speciality" class="text">
-            {{ speciality === "Développement Logiciel, Tests et Qualité" ? "Dev Logiciel" : speciality }}
+            {{ speciality === DLTQ ? "Dev Logiciel" : speciality }}
           </span>
           <span v-else class="skeleton skeleton-text"></span>
         </h3>
@@ -26,20 +29,20 @@ defineProps({
       </div>
       <div class="right">
         <p class="city">
-          <span v-if="city">Ville : {{ city }}</span>
+          <span v-if="city">{{ t('companyItem.companyCity') }} : {{ city }}</span>
           <span v-else class="skeleton skeleton-text short"></span>
         </p>
         <p class="country">
-          <span v-if="country">Pays : {{ country }}</span>
+          <span v-if="country">{{ t('companyItem.companyState') }} : {{ country }}</span>
           <span v-else class="skeleton skeleton-text short"></span>
         </p>
         <p class="pc">
-          <span v-if="pc">Code Postal : {{ pc }}</span>
+          <span v-if="pc">{{ t('companyItem.companyPC') }} : {{ pc }}</span>
           <span v-else class="skeleton skeleton-text short"></span>
         </p>
       </div>
     </div>
-    <p class="more">Cliquer pour plus d'informations</p>
+    <p class="more">{{ t('companyItem.clickForDetails') }}</p>
   </div>
 </template>
 
