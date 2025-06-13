@@ -65,7 +65,7 @@ function toggleSideBar() {
 
 // Fonction pour afficher un message d'indisponibilité de la fonctionnalité
 function handleClick() {
-  popupRef.value.showPopup("Cette fonctionnalité arrive bientôt !")
+  popupRef.value.showPopup("Not available yet!");
 }
 
 onMounted(fetchCompanies);
