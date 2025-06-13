@@ -97,7 +97,10 @@ onMounted(fetchCompanies);
       <div v-if="props.isOpen" class="add-company-action">
         <button @click="openModal" class="plus-button" aria-label="Ajouter">+</button>
       </div>
-      <LangSwitcher />
+      
+      <div v-if="props.isOpen" class="lang-switcher">
+        <LangSwitcher />
+      </div>
       
       <hr class="separator" />
       <h1>Find My Company</h1>
@@ -291,5 +294,16 @@ select {
   color: var(--red-btn-hover);
   transform: scale(1.2);
 }
+
+.lang-switch {
+  display: flex;
+  gap: 5px;
+  position: absolute;
+  top: 1.5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
 
 </style>

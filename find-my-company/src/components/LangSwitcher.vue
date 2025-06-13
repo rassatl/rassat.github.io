@@ -23,19 +23,12 @@ const availableLangs = Object.keys(languages)
 </template>
 
 <style scoped>
-.lang-switch {
-  display: flex;
-  gap: 5px;
-  margin: 10px 0;
-  justify-content: flex-start;
-}
-
 .lang-switch button {
   background-color: transparent;
   border: 1px solid var(--red-esigelec);
   color: var(--red-esigelec);
   font-weight: bold;
-  padding: 4px 8px;
+  padding: 2px 8px;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
