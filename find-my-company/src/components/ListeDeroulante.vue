@@ -7,9 +7,11 @@ import AddCompanyForm from './AddCompanyForm.vue';
 import ListCompanies from './ListCompanies.vue';
 import LangSwitcher from './LangSwitcher.vue'
 
+const isMobile = ref(false)
+const listeDeroulanteWidth = ref(400)
+const listeDeroulanteDefaultSize = 0
+
 const t = inject('t')
-const changeLang = inject('changeLang')
-const currentLang = inject('currentLang')
 
 // popup pour indiquer que la fonctionnalité n'est pas encore disponible
 import UnavailablePopup from './UnavailablePopup.vue'
@@ -68,6 +70,16 @@ function handleClick() {
   popupRef.value.showPopup("Not available yet!");
 }
 
+onMounted(() => {
+  const updateSize = () => {
+    isMobile.value = window.innerWidth <= 768
+    listeDeroulanteWidth.value = isMobile.value ? 280 : 400
+  }
+
+  window.addEventListener('resize', updateSize)
+  updateSize()
+})
+
 onMounted(fetchCompanies);
 </script>
 
@@ -76,7 +88,7 @@ onMounted(fetchCompanies);
     <div
       class="sidebar"
       :class="{ closed: !props.isOpen }"
-      :style="{ width: props.isOpen ? '400px' : '0' }">
+      :style="{ width: props.isOpen ? listeDeroulanteWidth+'px' : listeDeroulanteDefaultSize+'px' }">
 
       <!-- Bouton pour se connecter -->
       <div v-if="props.isOpen" class="connection-action">
@@ -130,7 +142,7 @@ onMounted(fetchCompanies);
       class="toggle-button"
       @click="toggleSideBar"
       :class="{ closed: !props.isOpen }"
-      :style="{ left: props.isOpen ? '400px' : '0' }"
+      :style="{ left: props.isOpen ? listeDeroulanteWidth+'px' : listeDeroulanteDefaultSize+'px' }"
     >
       <!-- Flèche pour savoir dans quel sens la sidebar va aller si on clique sur le bouton -->
       <span><i :class="['arrow', props.isOpen ? 'left' : 'right']"></i></span> 
@@ -168,10 +180,15 @@ h2 {
   overflow-y: auto;
   transition: transform 0.3s ease, width 0.3s ease;
   box-sizing: border-box;
-  z-index: 1000;
+  z-index: 800;
 }
 .sidebar.closed {
   transform: translateX(-100%);
+}
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
 }
 
 .toggle-button {
