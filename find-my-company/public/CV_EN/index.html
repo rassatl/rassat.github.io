@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>English Resume / CV Anglais</title>
+    <style>
+      body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Affiche le PDF -->
+    <iframe src="/CV_EN.pdf"></iframe>
+
+    <!-- Déclenche le téléchargement -->
+    <a id="dl" href="/CV_EN.pdf" download="CV_EN.pdf" style="display: none;"></a>
+    <script>
+      setTimeout(() => {
+        document.getElementById('dl').click();
+      }, 500);
+    </script>
+  </body>
+</html>
