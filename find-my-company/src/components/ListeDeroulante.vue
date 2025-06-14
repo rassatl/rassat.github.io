@@ -85,10 +85,7 @@ onMounted(fetchCompanies);
 
 <template>
   <div>
-    <div
-      class="sidebar"
-      :class="{ closed: !props.isOpen }"
-      :style="{ width: props.isOpen ? listeDeroulanteWidth+'px' : listeDeroulanteDefaultSize+'px' }">
+    <div class="sidebar" :class="{ closed: !props.isOpen }" :style="{ width: props.isOpen ? listeDeroulanteWidth+'px' : listeDeroulanteDefaultSize+'px' }">
 
       <!-- Bouton pour se connecter -->
       <div v-if="props.isOpen" class="connection-action">

@@ -21,6 +21,6 @@ const selectedSpeciality = ref('');
 
 <template>
   <ListeDeroulante :isOpen="isOpen" :visibleCompanies="visibleCompanies" @toggle="isOpen = !isOpen" @update-speciality="selectedSpeciality = $event"/>
-  <MapComponent :isOpen="isOpen" :selectedSpeciality="selectedSpeciality" @update-visible-companies="visibleCompanies = $event"/>
+  <MapComponent :selectedSpeciality="selectedSpeciality" @update-visible-companies="visibleCompanies = $event"/>
 </template>
  

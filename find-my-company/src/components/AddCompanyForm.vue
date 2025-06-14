@@ -5,10 +5,14 @@ import { collection, addDoc } from 'firebase/firestore';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-control-geocoder';
+
+import { getCountryList } from '../countries.js'
+
 import UnavailablePopup from './UnavailablePopup.vue'
 const popupRef = ref()
 
 const t = inject('t')
+const countryList = ref([]);
 
 const emit = defineEmits(['refresh']);
 const speciality = ref('');
@@ -48,6 +52,10 @@ onMounted(() => {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
+
+  // Récupération de la liste des pays depuis le fichier countries.js
+  const lang = localStorage.getItem('lang') || 'fr';
+  countryList.value = Object.entries(getCountryList(lang));
 });
 
 // Récupérer les entreprises depuis Firestore
@@ -56,7 +64,7 @@ watch([address, city, pc, country], ([newAddress, newCity, newPc, newCountry]) =
   debounceTimeout = setTimeout(async () => {
 
     // Vérifier si tous les champs d'adresse sont remplis
-    if (![newAddress, newCity, newPc, newCountry].every(field => field.trim() !== '')) {
+    if (![newAddress].every(field => field.trim() !== '')) {
       console.warn("Tous les champs d'adresse doivent être remplis avant de rechercher.");
       return;
     }
@@ -64,7 +72,7 @@ watch([address, city, pc, country], ([newAddress, newCity, newPc, newCountry]) =
     if (fullAddress.trim().length > 10) {
       isLoading.value = true;
       try {
-        // console.log("🛰️ Fetching address:", fullAddress);
+        // console.log("Fetching address:", fullAddress);
         // Appel à l'API Nominatim pour la géocodage
         const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullAddress)}`, {
           headers: {
@@ -110,6 +118,22 @@ const submitForm = async () => {
   }
 
   try {
+    // Vérification des coordonnées GPS
+    const reverseUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${x.value}&lon=${y.value}&zoom=3&addressdetails=1`;
+    const response = await fetch(reverseUrl, {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'VueApp/1.0 (youremail@example.com)'
+      }
+    });
+    const reverseData = await response.json();
+    const countryFromCoordinates = reverseData.address?.country;
+    // Check
+    if (!countryFromCoordinates || !country.value.toLowerCase().includes(countryFromCoordinates.toLowerCase())) {
+      alert(t('addCompanyForm.errorCompanyStateNotCoherent') + countryFromCoordinates);
+      return;
+    }
+
     await addDoc(collection(db, 'companies'), {
       speciality: speciality.value,
       name: name.value,
@@ -131,7 +155,6 @@ const submitForm = async () => {
     y.value = '';
 
     emit('refresh');
-    // Afficher le popup de succès
     popupRef.value.showPopup("Fonctionalité refresh en développement ! Faite F5 pour voir les changements.");
     emit('close');
   } catch (e) {
@@ -158,7 +181,12 @@ const submitForm = async () => {
       </div>
       <div class="form-group">
         <label for="country">{{ t('addCompanyForm.companyState') }}</label>
-        <input id="country" v-model="country" required />
+        <select id="country" v-model="country" required>
+          <option disabled value="">{{ t('addCompanyForm.selectCompanyState') }}</option>
+          <option v-for="[code, name] in countryList" :key="code" :value="name">
+            {{ name }}
+          </option>
+        </select>
       </div>
       <div class="form-group">
         <label for="address">{{ t('addCompanyForm.companyAddress') }}</label>
