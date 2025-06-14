@@ -294,4 +294,17 @@ input:focus {
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   flex-shrink: 0;
 }
+@media (max-width: 768px) {
+  .form-map-wrapper {
+    flex-direction: column;
+    align-items: center;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .mini-map {
+    width: 100%;
+    height: 300px;
+  }
+}
+
 </style>
